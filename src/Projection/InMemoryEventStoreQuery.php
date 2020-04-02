@@ -21,7 +21,7 @@ use Prooph\EventStore\Exception;
 use Prooph\EventStore\InMemoryEventStore;
 use Prooph\EventStore\Metadata\MetadataMatcher;
 use Prooph\EventStore\NonTransactionalInMemoryEventStore;
-use Prooph\EventStore\StreamIterator\MergedStreamIterator;
+use Prooph\EventStore\StreamIterator\MergedIterator;
 use Prooph\EventStore\StreamName;
 
 final class InMemoryEventStoreQuery implements Query
@@ -259,7 +259,7 @@ final class InMemoryEventStoreQuery implements Query
             }
         }
 
-        $streamEvents = new MergedStreamIterator(\array_keys($eventStreams), ...\array_values($eventStreams));
+        $streamEvents = new MergedIterator(\array_keys($eventStreams), ...\array_values($eventStreams));
 
         if ($singleHandler) {
             $this->handleStreamWithSingleHandler($streamEvents);
@@ -278,7 +278,7 @@ final class InMemoryEventStoreQuery implements Query
         return $this->state;
     }
 
-    private function handleStreamWithSingleHandler(MergedStreamIterator $events): void
+    private function handleStreamWithSingleHandler(MergedIterator $events): void
     {
         $handler = $this->handler;
 
@@ -303,7 +303,7 @@ final class InMemoryEventStoreQuery implements Query
         }
     }
 
-    private function handleStreamWithHandlers(MergedStreamIterator $events): void
+    private function handleStreamWithHandlers(MergedIterator $events): void
     {
         /* @var Message $event */
         foreach ($events as $event) {

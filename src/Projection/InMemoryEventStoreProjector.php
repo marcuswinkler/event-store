@@ -23,7 +23,7 @@ use Prooph\EventStore\InMemoryEventStore;
 use Prooph\EventStore\Metadata\MetadataMatcher;
 use Prooph\EventStore\NonTransactionalInMemoryEventStore;
 use Prooph\EventStore\Stream;
-use Prooph\EventStore\StreamIterator\MergedStreamIterator;
+use Prooph\EventStore\StreamIterator\MergedIterator;
 use Prooph\EventStore\StreamName;
 use Prooph\EventStore\Util\ArrayCache;
 
@@ -362,7 +362,7 @@ final class InMemoryEventStoreProjector implements Projector
                 }
             }
 
-            $streamEvents = new MergedStreamIterator(\array_keys($eventStreams), ...\array_values($eventStreams));
+            $streamEvents = new MergedIterator(\array_keys($eventStreams), ...\array_values($eventStreams));
 
             if ($singleHandler) {
                 $this->handleStreamWithSingleHandler($streamEvents);
@@ -399,7 +399,7 @@ final class InMemoryEventStoreProjector implements Projector
         $this->streamPositions = [];
     }
 
-    private function handleStreamWithSingleHandler(MergedStreamIterator $events): void
+    private function handleStreamWithSingleHandler(MergedIterator $events): void
     {
         $handler = $this->handler;
 
@@ -424,7 +424,7 @@ final class InMemoryEventStoreProjector implements Projector
         }
     }
 
-    private function handleStreamWithHandlers(MergedStreamIterator $events): void
+    private function handleStreamWithHandlers(MergedIterator $events): void
     {
         /* @var Message $event */
         foreach ($events as $event) {
